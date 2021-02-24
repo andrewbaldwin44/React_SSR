@@ -1,0 +1,6 @@
+{
+  "restartable": true,
+  "watch": ["dist/"],
+  "ext": "js ts",
+  "delay": "1000ms"
+}
