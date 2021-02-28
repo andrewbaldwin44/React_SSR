@@ -1,23 +1,37 @@
 import path from "path";
 import Express from "express";
 import React from "react";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-// import counterApp from "./reducers";
-// import App from "./containers/App";
+import { renderToString } from "react-dom/server";
+import { renderFile } from "ejs";
+
+import configureStore from "../redux/store";
+import App from "../index";
 
 const app = Express();
-const port = 4000;
+const port = 3000;
 
 app
-  .use("/static", Express.static("static"))
-  .get("/", (req, res) => res.send("hello"))
-  // .use(handleRender)
+  .set("views", path.join(__dirname, "../../dist"))
+  .set("view engine", "ejs")
+  .engine("html", renderFile)
+  .get("*/", handleRender)
   .listen(port);
 
-function handleRender(req, res) {
-  /* ... */
-}
-function renderFullPage(html, preloadedState) {
-  /* ... */
+function handleRender(_, res) {
+  const store = configureStore();
+
+  const html = renderToString(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+
+  const initialState = `
+    <script>
+      window.__INITIAL_STATE__ = ${store.getState()};
+    </script>
+  `;
+
+  res.render("index.html", { html, initialState });
 }

@@ -7,11 +7,29 @@ const CommonWebpackConfig = require("./webpack.common.config");
 
 const PROFILER = process.env.PROFILER === "true";
 const PRODUCTION = process.env.PRODUCTION === "true";
+const SERVER_RENDER = process.env.SERVER_RENDER === "true";
 const SHARE = process.env.SHARE === "true";
+
+function getInterpolationString({ onServerRender, onDevRender }) {
+  if (SERVER_RENDER) {
+    return onServerRender;
+  }
+  return onDevRender;
+}
 
 const plugins = [
   new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
-  new HtmlWebpackPlugin()
+  new HtmlWebpackPlugin({
+    template: path.join(__dirname, "src", "index.html"),
+    html: getInterpolationString({
+      onServerRender: "<%- html %>",
+      onDevRender: ""
+    }),
+    initialState: getInterpolationString({
+      onServerRender: "<%= initialState %>",
+      onDevRender: ""
+    })
+  })
 ];
 
 if (PROFILER) {
@@ -39,7 +57,7 @@ if (PRODUCTION) {
 module.exports = {
   ...CommonWebpackConfig,
 
-  entry: "./src/index.js",
+  entry: "./src/client.js",
   output: {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
