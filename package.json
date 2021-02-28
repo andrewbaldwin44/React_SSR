@@ -11,9 +11,10 @@
     "start": "SERVER_RENDER=true node dist/server/index.js",
     "start:client": "webpack-dev-server",
     "start:server": "SERVER_RENDER=true nodemon --config nodemon.json dist/server/server.js",
-    "dev:iso": "SERVER_RENDER=true npm-run-all --parallel dev:iso:server dev:iso:client",
+    "dev:iso": "yarn clean && SERVER_RENDER=true npm-run-all --parallel dev:iso:client dev:iso:server",
     "dev:iso:client": "yarn run build:client --watch",
-    "dev:iso:server": "yarn run build:server --watch"
+    "dev:iso:server": "yarn run build:server --watch",
+    "clean": "rm -rf ./dist"
   },
   "dependencies": {
     "ejs": "^3.1.6",
@@ -30,7 +31,6 @@
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.12.17",
     "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.0.2",
     "html-webpack-plugin": "^5.2.0",
     "mini-css-extract-plugin": "^1.3.8",

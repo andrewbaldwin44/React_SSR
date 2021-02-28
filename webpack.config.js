@@ -2,7 +2,6 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CommonWebpackConfig = require("./webpack.common.config");
 
 const PROFILER = process.env.PROFILER === "true";
@@ -18,7 +17,6 @@ function getInterpolationString({ onServerRender, onDevRender }) {
 }
 
 const plugins = [
-  new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
   new HtmlWebpackPlugin({
     template: path.join(__dirname, "src", "index.html"),
     html: getInterpolationString({
@@ -26,7 +24,7 @@ const plugins = [
       onDevRender: ""
     }),
     initialState: getInterpolationString({
-      onServerRender: "<%= initialState %>",
+      onServerRender: "<%- initialState %>",
       onDevRender: ""
     })
   })
