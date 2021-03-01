@@ -29,7 +29,10 @@ function handleRender(_, res) {
 
   const initialState = `
     <script>
-      window.__INITIAL_STATE__ = ${store.getState()};
+      window.__INITIAL_STATE__ = ${JSON.stringify(store.getState()).replace(
+        /</g,
+        "\\u003c"
+      )};
     </script>
   `;
 

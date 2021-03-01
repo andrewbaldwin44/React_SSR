@@ -59,7 +59,7 @@ module.exports = {
   output: {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: ""
+    publicPath: "/"
   },
 
   plugins,
@@ -121,5 +121,9 @@ module.exports = {
     host: "localhost",
     port: 3000,
     open: SHARE
+  },
+
+  node: {
+    __dirname: true
   }
 };

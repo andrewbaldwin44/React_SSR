@@ -1,11 +1,13 @@
 const path = require("path");
+const webpack = require("webpack");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CommonWebpackConfig = require("./webpack.common.config");
 
+const PRODUCTION = process.env.PRODUCTION === "true";
 const PROFILER = process.env.PROFILER === "true";
 
-const plugins = [new CleanWebpackPlugin({ cleanStaleWebpackAssets: false })];
+const plugins = [];
 
 if (PROFILER) {
   plugins.push(
@@ -16,6 +18,16 @@ if (PROFILER) {
       defaultSizes: "gzip",
       statsOptions: { source: false },
       reportFilename: path.join(__dirname, "profiler/report.html")
+    })
+  );
+}
+
+if (!PRODUCTION) {
+  plugins.push(
+    new webpack.BannerPlugin({
+      banner: 'require("source-map-support").install();',
+      raw: true,
+      entryOnly: false
     })
   );
 }
