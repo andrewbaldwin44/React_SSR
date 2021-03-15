@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
@@ -27,6 +28,9 @@ const plugins = [
       onServerRender: "<%- initialState %>",
       onDevRender: ""
     })
+  }),
+  new webpack.DefinePlugin({
+    'process.env.CLIENT': true,
   })
 ];
 
@@ -59,7 +63,7 @@ module.exports = {
   output: {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/"
+    publicPath: "/assets"
   },
 
   plugins,

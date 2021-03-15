@@ -12,9 +12,10 @@ const app = Express();
 const port = 3000;
 
 app
-  .set("views", path.join(__dirname, "../../dist"))
+  .set("views", path.join(process.cwd(), "dist"))
   .set("view engine", "ejs")
   .engine("html", renderFile)
+  .use("/assets", Express.static(path.join(process.cwd(), "dist")))
   .get("*/", handleRender)
   .listen(port);
 
@@ -30,9 +31,9 @@ function handleRender(_, res) {
   const initialState = `
     <script>
       window.__INITIAL_STATE__ = ${JSON.stringify(store.getState()).replace(
-        /</g,
-        "\\u003c"
-      )};
+      /</g,
+      "\\u003c"
+    )};
     </script>
   `;
 

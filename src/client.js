@@ -10,9 +10,13 @@ delete window.__INITIAL_STATE__;
 
 const store = configureStore(initialState);
 
-hydrate(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
+function run() {
+  hydrate(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById("root")
+  );
+}
+
+run()
